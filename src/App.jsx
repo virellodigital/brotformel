@@ -3,7 +3,7 @@ import { supabase } from './lib/supabase';
 import logo from './assets/logo.png';
 
 function AuthScreen() {
-  document.title = 'Brotformel Login';
+  document.title = 'Brotformel';
   const [mode, setMode] = useState('register');
   const [lang, setLang] = useState('de');
   const [fullName, setFullName] = useState('');
@@ -13,9 +13,7 @@ function AuthScreen() {
   const [message, setMessage] = useState('');
   const [loading, setLoading] = useState(false);
   
-  useEffect(() => {
-  document.title = 'Brotformel Login';
-}, []);
+ 
 
   const t = {
     de: {
@@ -334,7 +332,7 @@ function AuthScreen() {
 }
 
 function ProtectedApp({ user, onLogout }) {
-  document.title = 'Brotformel Login';
+  document.title = 'Brotformel';
   const [lang, setLang] = useState('de');
   const [tab, setTab] = useState('mix');
 
@@ -362,10 +360,7 @@ function ProtectedApp({ user, onLogout }) {
     durum: 0,
     corn: 0,
     misc: 0,
-  });
-  useEffect(() => {
-  document.title = 'Brotformel Login';
-}, []);
+  
 
   useEffect(() => {
   async function loadAdminData() {
