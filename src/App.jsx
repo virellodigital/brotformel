@@ -3,6 +3,7 @@ import { supabase } from './lib/supabase';
 import logo from './assets/logo.png';
 
 function AuthScreen() {
+  document.title = 'AAAA TEST';
   const [mode, setMode] = useState('register');
   const [lang, setLang] = useState('de');
   const [fullName, setFullName] = useState('');
@@ -11,6 +12,8 @@ function AuthScreen() {
   const [purchaseCode, setPurchaseCode] = useState('');
   const [message, setMessage] = useState('');
   const [loading, setLoading] = useState(false);
+  
+ 
 
   const t = {
     de: {
@@ -329,6 +332,7 @@ function AuthScreen() {
 }
 
 function ProtectedApp({ user, onLogout }) {
+  document.title = 'AAAA TEST';
   const [lang, setLang] = useState('de');
   const [tab, setTab] = useState('mix');
 
@@ -356,7 +360,7 @@ function ProtectedApp({ user, onLogout }) {
     durum: 0,
     corn: 0,
     misc: 0,
-  });
+  
 
   useEffect(() => {
   async function loadAdminData() {
