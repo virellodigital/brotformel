@@ -346,7 +346,8 @@ function ProtectedApp({ user, onLogout }) {
   const [flourAmount, setFlourAmount] = useState(1000);
   const [desiredDough, setDesiredDough] = useState(1000);
   const [pieces, setPieces] = useState(2);
-
+  const [profile, setProfile] = useState(null);
+  const [isAdmin, setIsAdmin] = useState(false);
   const [flours, setFlours] = useState({
     wheat: 700,
     wholegrain: 200,
@@ -360,9 +361,28 @@ function ProtectedApp({ user, onLogout }) {
 
   useEffect(() => {
   async function loadAdminData() {
-    if (tab !== 'admin') return;
+    if (tab !== 'admin' || !isAdmin) return;
 
     setAdminLoading(true);
+
+    useEffect(() => {
+  async function loadProfile() {
+    if (!user?.id) return;
+
+    const { data } = await supabase
+      .from('profiles')
+      .select('id, email, role, preferred_language')
+      .eq('id', user.id)
+      .maybeSingle();
+
+    setProfile(data || null);
+    setIsAdmin(
+  data?.role === 'admin' || user.email === 'digitalvirello@gmail.com'
+);
+  }
+
+  loadProfile();
+}, [user?.id]);
 
     const [{ data: codes }, { data: profiles }] = await Promise.all([
       supabase
@@ -384,7 +404,7 @@ function ProtectedApp({ user, onLogout }) {
   }
 
   loadAdminData();
-}, [tab]);
+}, [tab, isAdmin]);
   const t = {
     de: {
       brand: 'Brotformel',
@@ -948,7 +968,7 @@ ${t[lang].cards.instructions}
         <div style={mainGridStyle}>
           <div style={{ display: 'flex', flexDirection: 'column', gap: 24 }}>
             <div style={tabsBarStyle}>
-              {['mix', 'flour', 'dough', 'recipe', 'admin'].map((tabKey) => (
+              {['mix', 'flour', 'dough', 'recipe', ...(isAdmin ? ['admin'] : [])].map((tabKey) => (
                 <button key={tabKey} onClick={() => setTab(tabKey)} style={tabButtonStyle(tab === tabKey)}>
                   {t[lang].tabs[tabKey]}
                 </button>
@@ -1075,7 +1095,7 @@ ${t[lang].cards.instructions}
   </section>
 )}
 
-            {tab === 'admin' && (
+            {tab === 'admin' && isAdmin && (
   <section style={creamCardStyle}>
     <h2 style={sectionTitleStyle}>{t[lang].cards.admin}</h2>
     <p style={sectionTextStyle}>{t[lang].adminText}</p>
