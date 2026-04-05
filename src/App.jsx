@@ -329,6 +329,7 @@ function AuthScreen() {
 }
 
 function ProtectedApp({ user, onLogout }) {
+  
   const [lang, setLang] = useState('de');
   const [tab, setTab] = useState('mix');
 
@@ -348,6 +349,15 @@ function ProtectedApp({ user, onLogout }) {
   const [pieces, setPieces] = useState(2);
   const [profile, setProfile] = useState(null);
   const [isAdmin, setIsAdmin] = useState(false);
+  console.log('USER EMAIL:', user?.email);
+  console.log('PROFILE:', profile);
+  console.log('IS ADMIN:', isAdmin);
+  const [stats, setStats] = useState({
+  totalCodes: 0,
+  validCodes: 0,
+  usedCodes: 0,
+  totalUsers: 0,
+});
   const [flours, setFlours] = useState({
     wheat: 700,
     wholegrain: 200,
@@ -360,51 +370,88 @@ function ProtectedApp({ user, onLogout }) {
   });
 
   useEffect(() => {
-  async function loadAdminData() {
-    if (tab !== 'admin' || !isAdmin) return;
-
-    setAdminLoading(true);
-
-    useEffect(() => {
   async function loadProfile() {
     if (!user?.id) return;
 
-    const { data } = await supabase
+    const { data, error } = await supabase
       .from('profiles')
       .select('id, email, role, preferred_language')
       .eq('id', user.id)
       .maybeSingle();
 
+    console.log('PROFILE LOAD DATA:', data);
+    console.log('PROFILE LOAD ERROR:', error);
+
     setProfile(data || null);
     setIsAdmin(
-  data?.role === 'admin' || user.email === 'digitalvirello@gmail.com'
-);
+      data?.role === 'admin' || user?.email === 'digitalvirello@gmail.com'
+    );
   }
 
   loadProfile();
 }, [user?.id]);
 
-    const [{ data: codes }, { data: profiles }] = await Promise.all([
-      supabase
+    useEffect(() => {
+  async function loadAdminData() {
+    if (tab !== 'admin') return;
+
+    setAdminLoading(true);
+
+    try {
+      const { data: codes, error: codesError } = await supabase
         .from('access_codes')
         .select('id, code, is_used, used_at, created_at')
+        .eq('is_used', false)
         .order('created_at', { ascending: false })
-        .limit(10),
+        .limit(10);
 
-      supabase
+      const { data: profiles, error: profilesError } = await supabase
         .from('profiles')
-        .select('id, email, full_name, role, preferred_language, created_at')
+        .select('id, email, full_name, role, created_at')
         .order('created_at', { ascending: false })
-        .limit(10),
-    ]);
+        .limit(10);
 
-    setAdminCodes(codes || []);
-    setAdminProfiles(profiles || []);
-    setAdminLoading(false);
+      const { count: totalCodes } = await supabase
+        .from('access_codes')
+        .select('*', { count: 'exact', head: true });
+
+      const { count: validCodes } = await supabase
+        .from('access_codes')
+        .select('*', { count: 'exact', head: true })
+        .eq('is_used', false);
+
+      const { count: usedCodes } = await supabase
+        .from('access_codes')
+        .select('*', { count: 'exact', head: true })
+        .eq('is_used', true);
+
+      const { count: totalUsers } = await supabase
+        .from('profiles')
+        .select('*', { count: 'exact', head: true });
+
+      console.log('codesError:', codesError);
+      console.log('profilesError:', profilesError);
+      console.log('codes:', codes);
+      console.log('profiles:', profiles);
+
+      setAdminCodes(codes || []);
+      setAdminProfiles(profiles || []);
+
+      setStats({
+        totalCodes: totalCodes || 0,
+        validCodes: validCodes || 0,
+        usedCodes: usedCodes || 0,
+        totalUsers: totalUsers || 0,
+      });
+    } catch (err) {
+      console.error('Admin load failed:', err);
+    } finally {
+      setAdminLoading(false);
+    }
   }
 
   loadAdminData();
-}, [tab, isAdmin]);
+}, [tab]);
   const t = {
     de: {
       brand: 'Brotformel',
