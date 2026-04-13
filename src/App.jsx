@@ -948,10 +948,10 @@ ${t[lang].cards.instructions}
   return (
     <div style={appPageStyle}>
       <div style={{
-  width: '100%',
-  maxWidth: isMobile ? '100%' : 1280,
-  margin: isMobile ? 0 : '0 auto'
-}}>
+      width: '100%',
+      maxWidth: isMobile ? '100%' : 1280,
+      margin: isMobile ? 0 : '0 auto'
+  }}>
         <div style={heroShellStyle}>
           <div
   style={{
@@ -1645,9 +1645,12 @@ const authFeatureCard = {
 
 const appPageStyle = {
   minHeight: '100vh',
+  width: '100vw',
   background: 'radial-gradient(circle at top, #3a2a20 0%, #1a120e 42%, #080605 100%)',
-  padding: 24,
+  padding: 0,
+  margin: 0,
   fontFamily: 'Arial, sans-serif',
+  overflowX: 'hidden',
 };
 
 const heroShellStyle = {
