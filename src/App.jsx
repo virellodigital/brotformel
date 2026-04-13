@@ -1214,8 +1214,11 @@ ${t[lang].cards.instructions}
 
                 <div
   style={{
-    ...summaryTileGridStyle,
-    gridTemplateColumns: isMobile ? '1fr 1fr' : 'repeat(2, 1fr)',
+    display: 'grid',
+    gridTemplateColumns: isMobile ? '1fr' : 'repeat(2, 1fr)',
+    gap: 14,
+    width: '100%',
+    minWidth: 0,
   }}
 >
                   <FieldBlockLight label={t[lang].fields.desiredDough}>
