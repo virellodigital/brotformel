@@ -1180,7 +1180,12 @@ ${t[lang].cards.instructions}
                 <h2 style={sectionTitleStyle}>{t[lang].tabs.flour}</h2>
                 <p style={sectionTextStyle}>Für Fälle wie: „Ich habe 1 kg Mehl. Was brauche ich?“</p>
 
-                <div style={fieldGridTwoStyle}>
+                <div
+  style={{
+    ...fieldGridTwoStyle,
+    gridTemplateColumns: isMobile ? '1fr' : 'repeat(2, 1fr)',
+  }}
+>
                   <FieldBlockLight label={t[lang].fields.totalFlour}>
                     <input style={premiumInput} type="number" value={flourAmount} onChange={(e) => setFlourAmount(Number(e.target.value))} />
                   </FieldBlockLight>
