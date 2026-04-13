@@ -1,8 +1,20 @@
 import { useEffect, useMemo, useState } from 'react';
 import { supabase } from './lib/supabase';
 import logo from './assets/logo.png';
+function useIsMobile(breakpoint = 900) {
+  const [isMobile, setIsMobile] = useState(() => window.innerWidth < breakpoint);
+
+  useEffect(() => {
+    const onResize = () => setIsMobile(window.innerWidth < breakpoint);
+    window.addEventListener('resize', onResize);
+    return () => window.removeEventListener('resize', onResize);
+  }, [breakpoint]);
+
+  return isMobile;
+}
 
 function AuthScreen() {
+  const isMobile = useIsMobile();
   const [mode, setMode] = useState('register');
   const [lang, setLang] = useState('de');
   const [fullName, setFullName] = useState('');
@@ -180,14 +192,32 @@ function AuthScreen() {
 
   return (
     <div style={authPageStyle}>
-      <div style={authShellStyle}>
+      <div
+  style={{
+    ...authShellStyle,
+    gridTemplateColumns: isMobile ? '1fr' : '1.1fr 0.9fr',
+  }}
+>
         <div style={authHeroStyle}>
           <div style={heroBadgeStyle}>Brotformel</div>
-          <h1 style={heroTitleStyle}>Premium bread formula app</h1>
+          <h1
+  style={{
+    ...heroTitleStyle,
+    fontSize: isMobile ? 40 : heroTitleStyle.fontSize,
+    textAlign: isMobile ? 'center' : 'left',
+  }}
+>
+  Premium bread formula app
+</h1>
           <p style={heroTextStyle}>
             Geschützter Zugang mit Kaufcode, Passwort-Reset und Premium-Rechner für Brotformeln.
           </p>
-          <div style={authFeatureGrid}>
+          <div
+  style={{
+    ...authFeatureGrid,
+    gridTemplateColumns: isMobile ? '1fr' : 'repeat(3, 1fr)',
+  }}
+>
             <div style={authFeatureCard}>Registrierung nur mit Kaufcode</div>
             <div style={authFeatureCard}>Sicherer Login</div>
             <div style={authFeatureCard}>Passwort-Reset per E-Mail</div>
@@ -329,6 +359,7 @@ function AuthScreen() {
 }
 
 function ProtectedApp({ user, onLogout }) {
+  const isMobile = useIsMobile();
   
   const [lang, setLang] = useState('de');
   const [tab, setTab] = useState('mix');
@@ -918,7 +949,12 @@ ${t[lang].cards.instructions}
     <div style={appPageStyle}>
       <div style={{ maxWidth: 1280, margin: '0 auto' }}>
         <div style={heroShellStyle}>
-          <div style={heroTopRowStyle}>
+          <div
+  style={{
+    ...heroTopRowStyle,
+    gridTemplateColumns: isMobile ? '1fr' : '1.1fr 0.9fr',
+  }}
+>
             <div>
               <div style={{ display: 'flex', gap: 10, flexWrap: 'wrap', marginBottom: 16 }}>
                 <span style={goldBadgeStyle}>{t[lang].premium}</span>
@@ -927,14 +963,19 @@ ${t[lang].cards.instructions}
               </div>
               <div style={{ display: 'flex', justifyContent: 'center' }}>
   <img
-    src={logo}
-    alt="Brotformel"
-    style={{
-      height: 100,
-      width: 'auto',
-      objectFit: 'contain',
-    }}
-  />
+  src={logo}
+  alt="Brotformel"
+  style={{
+    height: isMobile ? 70 : 100,
+    maxWidth: '100%',
+    width: 'auto',
+    objectFit: 'contain',
+    filter: 'drop-shadow(0 0 12px rgba(231,194,122,0.6))',
+    transition: '0.3s',
+  }}
+  onMouseEnter={(e) => (e.target.style.transform = 'scale(1.05)')}
+  onMouseLeave={(e) => (e.target.style.transform = 'scale(1)')}
+/>
 </div>
               <p style={heroMainTextStyle}>{t[lang].hero}</p>
 
@@ -967,7 +1008,12 @@ ${t[lang].cards.instructions}
             </div>
           </div>
 
-          <div style={topSettingsShell}>
+          <div
+  style={{
+    ...topSettingsShell,
+    gridTemplateColumns: isMobile ? '1fr 1fr' : 'repeat(5, 1fr)',
+  }}
+>
             <FieldBlock label={t[lang].fields.baseWater}>
               <input style={premiumInputDark} type="number" value={baseWaterPct} onChange={(e) => setBaseWaterPct(Number(e.target.value))} />
             </FieldBlock>
@@ -1012,11 +1058,27 @@ ${t[lang].cards.instructions}
           </div>
         </div>
 
-        <div style={mainGridStyle}>
+        <div
+  style={{
+    ...mainGridStyle,
+    gridTemplateColumns: isMobile ? '1fr' : '1.15fr 0.85fr',
+  }}
+>
           <div style={{ display: 'flex', flexDirection: 'column', gap: 24 }}>
-            <div style={tabsBarStyle}>
+            <div
+  style={{
+    ...tabsBarStyle,
+    display: 'flex',
+    overflowX: 'auto',
+    gap: 8,
+  }}
+>
               {['mix', 'flour', 'dough', 'recipe', ...(isAdmin ? ['admin'] : [])].map((tabKey) => (
-                <button key={tabKey} onClick={() => setTab(tabKey)} style={tabButtonStyle(tab === tabKey)}>
+                <button key={tabKey} onClick={() => setTab(tabKey)} style={{
+  ...tabButtonStyle(tab === tabKey),
+  minWidth: isMobile ? 120 : 'auto',
+  flexShrink: 0,
+}}>
                   {t[lang].tabs[tabKey]}
                 </button>
               ))}
@@ -1029,7 +1091,12 @@ ${t[lang].cards.instructions}
                   {t[lang].fields.totalFlour}, {t[lang].fields.effectiveHydration} und {t[lang].fields.extraWater}
                 </p>
 
-                <div style={flourGridStyle}>
+                <div
+  style={{
+    ...flourGridStyle,
+    gridTemplateColumns: isMobile ? '1fr' : 'repeat(2, 1fr)',
+  }}
+>
                   {flourMix.items.map((item) => (
                     <div key={item.key} style={flourCardStyle}>
                       <div style={{ display: 'flex', justifyContent: 'space-between', gap: 10, marginBottom: 10 }}>
@@ -1057,7 +1124,12 @@ ${t[lang].cards.instructions}
                   ))}
                 </div>
 
-                <div style={resultGridLightStyle}>
+                <div
+  style={{
+    ...resultGridLightStyle,
+    gridTemplateColumns: isMobile ? '1fr' : 'repeat(3, 1fr)',
+  }}
+>
                   <ResultCardLight label={t[lang].fields.totalFlour} value={`${round(flourMix.totalFlour)} g`} strong />
                   <ResultCardLight label={t[lang].fields.extraWater} value={`${round(flourMix.weightedExtra * 100)} %`} />
                   <ResultCardLight label={t[lang].fields.effectiveHydration} value={`${round(flourMix.hydrationPct)} %`} />
@@ -1097,7 +1169,12 @@ ${t[lang].cards.instructions}
                 <h2 style={sectionTitleStyle}>{t[lang].tabs.dough}</h2>
                 <p style={sectionTextStyle}>Für Fälle wie: „Ich will genau 1000 g Gesamtteig haben.“</p>
 
-                <div style={fieldGridTwoStyle}>
+                <div
+  style={{
+    ...summaryTileGridStyle,
+    gridTemplateColumns: isMobile ? '1fr 1fr' : 'repeat(2, 1fr)',
+  }}
+>
                   <FieldBlockLight label={t[lang].fields.desiredDough}>
                     <input style={premiumInput} type="number" value={desiredDough} onChange={(e) => setDesiredDough(Number(e.target.value))} />
                   </FieldBlockLight>
@@ -1183,34 +1260,69 @@ ${t[lang].cards.instructions}
         <span style={{ fontWeight: 600 }}>{code.code}</span>
 
         <div style={{ display: 'flex', gap: 8, alignItems: 'center' }}>
-          <span
-            style={{
-              padding: '6px 10px',
-              borderRadius: '999px',
-              fontSize: 12,
-              fontWeight: 700,
-              background: code.is_used ? '#f3d6d6' : '#dff2df',
-              color: code.is_used ? '#8a2d2d' : '#256c2b',
-            }}
-          >
-            {code.is_used ? 'used' : 'active'}
-          </span>
+  <span
+    style={{
+      padding: '6px 10px',
+      borderRadius: '999px',
+      fontSize: 12,
+      fontWeight: 700,
+      background: code.is_used ? '#f3d6d6' : '#dff2df',
+      color: code.is_used ? '#8a2d2d' : '#256c2b',
+    }}
+  >
+    {code.is_used ? 'used' : 'active'}
+  </span>
 
-          <button
-            onClick={() => navigator.clipboard.writeText(code.code)}
-            style={{
-              border: 'none',
-              borderRadius: 10,
-              padding: '8px 12px',
-              cursor: 'pointer',
-              background: '#efe7db',
-              fontWeight: 600,
-            }}
-          >
-            Copy
-          </button>
+  <button
+    onClick={() => navigator.clipboard.writeText(code.code)}
+    style={{
+      border: 'none',
+      borderRadius: 10,
+      padding: '8px 12px',
+      cursor: 'pointer',
+      background: '#efe7db',
+      fontWeight: 600,
+    }}
+  >
+    Copy
+  </button>
+
+  {!code.is_used && (
+    <button
+      onClick={async () => {
+        const { error } = await supabase
+          .from('access_codes')
+          .update({ is_used: true })
+          .eq('id', code.id);
+
+        if (!error) {
+          const { data: codes } = await supabase
+            .from('access_codes')
+            .select('id, code, is_used, used_at, created_at')
+            .eq('is_used', false)
+            .order('created_at', { ascending: false })
+            .limit(10);
+
+          setAdminCodes(codes || []);
+        }
+      }}
+      style={{
+        border: 'none',
+        borderRadius: 10,
+        padding: '8px 12px',
+        cursor: 'pointer',
+        background: '#e74c3c',
+        color: 'white',
+        fontWeight: 600,
+      }}
+    >
+      Deaktivieren
+    </button>
+  )}
+</div>
+          
         </div>
-      </div>
+      
     ))}
   </div>
 </div>
@@ -1252,7 +1364,12 @@ ${t[lang].cards.instructions}
           <aside style={rightColumnShellStyle}>
             <h2 style={rightTitleStyle}>{t[lang].cards.summary}</h2>
 
-            <div style={summaryTileGridStyle}>
+            <div
+  style={{
+    ...summaryTileGridStyle,
+    gridTemplateColumns: isMobile ? '1fr 1fr' : 'repeat(2, 1fr)',
+  }}
+>
               <SummaryTile label={t[lang].fields.baseWater} value={`${round(baseWaterPct)}%`} />
               <SummaryTile label={t[lang].fields.effectiveHydration} value={`${round(flourMix.hydrationPct)}%`} />
               <SummaryTile label={t[lang].labels.yeast} value={`${round(yeastPct * 100, 2)}%`} />
@@ -1524,7 +1641,7 @@ const authFeatureCard = {
 
 const appPageStyle = {
   minHeight: '100vh',
-  background: 'radial-gradient(circle at top, #3b2f2f 0%, #1e1715 38%, #0f0a09 100%)',
+  background: 'radial-gradient(circle at top, #3a2a20 0%, #1a120e 42%, #080605 100%)',
   padding: 24,
   fontFamily: 'Arial, sans-serif',
 };
@@ -1532,10 +1649,10 @@ const appPageStyle = {
 const heroShellStyle = {
   marginBottom: 24,
   borderRadius: 36,
-  border: '1px solid rgba(255,255,255,0.08)',
-  background: 'rgba(255,255,255,0.05)',
-  boxShadow: '0 20px 60px rgba(0,0,0,0.25)',
-  backdropFilter: 'blur(16px)',
+  border: '1px solid rgba(255,255,255,0.10)',
+  background: 'rgba(255,255,255,0.06)',
+  boxShadow: '0 20px 60px rgba(0,0,0,0.28)',
+  backdropFilter: 'blur(18px)',
   padding: 32,
 };
 
@@ -1701,9 +1818,10 @@ const tabButtonStyle = (active) => ({
 
 const creamCardStyle = {
   borderRadius: 32,
-  background: '#f6f1ea',
+  background: 'linear-gradient(180deg, #f8f3ec 0%, #f2ebe1 100%)',
   padding: 28,
-  boxShadow: '0 20px 60px rgba(0,0,0,0.2)',
+  boxShadow: '0 20px 60px rgba(0,0,0,0.24)',
+  border: '1px solid rgba(120, 90, 60, 0.08)',
 };
 
 const sectionTitleStyle = {
@@ -1835,10 +1953,10 @@ const adminStatValue = {
 
 const rightColumnShellStyle = {
   borderRadius: 32,
-  border: '1px solid rgba(255,255,255,0.08)',
-  background: 'rgba(255,255,255,0.05)',
-  boxShadow: '0 20px 60px rgba(0,0,0,0.2)',
-  backdropFilter: 'blur(16px)',
+  border: '1px solid rgba(255,255,255,0.10)',
+  background: 'rgba(255,255,255,0.06)',
+  boxShadow: '0 20px 60px rgba(0,0,0,0.24)',
+  backdropFilter: 'blur(18px)',
   padding: 24,
   color: 'white',
   alignSelf: 'start',
@@ -1859,9 +1977,10 @@ const summaryTileGridStyle = {
 
 const summaryTileStyle = {
   borderRadius: 22,
-  border: '1px solid rgba(255,255,255,0.1)',
-  background: 'rgba(255,255,255,0.1)',
+  border: '1px solid rgba(255,255,255,0.12)',
+  background: 'rgba(255,255,255,0.08)',
   padding: 18,
+  boxShadow: '0 10px 24px rgba(0,0,0,0.18)',
 };
 
 const summaryTileLabelStyle = {
