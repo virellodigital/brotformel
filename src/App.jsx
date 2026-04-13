@@ -1615,7 +1615,7 @@ const styles = {
 
 const authPageStyle = {
   minHeight: '100vh',
-  background: 'radial-gradient(circle at top, #3b2f2f 0%, #1e1715 38%, #0f0a09 100%)',
+  background: 'radial-gradient(circle at top, #f30c0c 0%, #1e1715 38%, #0f0a09 100%)',
   padding: 24,
   display: 'flex',
   alignItems: 'center',
