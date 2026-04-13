@@ -1019,7 +1019,7 @@ ${t[lang].cards.instructions}
           <div
   style={{
     ...topSettingsShell,
-    gridTemplateColumns: isMobile ? '1fr 1fr' : 'repeat(5, 1fr)',
+    gridTemplateColumns: isMobile ? '1fr' : 'repeat(5, 1fr)',
   }}
 >
             <FieldBlock label={t[lang].fields.baseWater}>
