@@ -947,7 +947,11 @@ ${t[lang].cards.instructions}
 
   return (
     <div style={appPageStyle}>
-      <div style={{ maxWidth: 1280, margin: '0 auto' }}>
+      <div style={{
+  width: '100%',
+  maxWidth: isMobile ? '100%' : 1280,
+  margin: isMobile ? 0 : '0 auto'
+}}>
         <div style={heroShellStyle}>
           <div
   style={{
