@@ -363,18 +363,22 @@ function ProtectedApp({ user, onLogout }) {
   const mainGridResponsive = {
   ...mainGridStyle,
   gridTemplateColumns: isMobile ? '1fr' : '1.15fr 0.85fr',
+  width: '100%',
+  minWidth: 0,
 };
 
 const rightColumnResponsive = {
   ...rightColumnShellStyle,
   marginTop: isMobile ? 20 : 0,
   width: '100%',
+  minWidth: 0,
   boxSizing: 'border-box',
 };
 
 const creamCardResponsive = {
   ...creamCardStyle,
   width: '100%',
+  minWidth: 0,
   boxSizing: 'border-box',
   overflow: 'hidden',
 };
@@ -1090,7 +1094,15 @@ ${t[lang].cards.instructions}
     gridTemplateColumns: isMobile ? '1fr' : '1.15fr 0.85fr',
   }}
 >
-          <div style={{ display: 'flex', flexDirection: 'column', gap: 24 }}>
+          <div
+  style={{
+    display: 'flex',
+    flexDirection: 'column',
+    gap: 24,
+    minWidth: 0,
+    width: '100%',
+  }}
+>
             <div
   style={{
     ...tabsBarStyle,
