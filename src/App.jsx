@@ -360,6 +360,24 @@ function AuthScreen() {
 
 function ProtectedApp({ user, onLogout }) {
   const isMobile = useIsMobile();
+  const mainGridResponsive = {
+  ...mainGridStyle,
+  gridTemplateColumns: isMobile ? '1fr' : '1.15fr 0.85fr',
+};
+
+const rightColumnResponsive = {
+  ...rightColumnShellStyle,
+  marginTop: isMobile ? 20 : 0,
+  width: '100%',
+  boxSizing: 'border-box',
+};
+
+const creamCardResponsive = {
+  ...creamCardStyle,
+  width: '100%',
+  boxSizing: 'border-box',
+  overflow: 'hidden',
+};
   
   const [lang, setLang] = useState('de');
   const [tab, setTab] = useState('mix');
@@ -1093,7 +1111,7 @@ ${t[lang].cards.instructions}
             </div>
 
             {tab === 'mix' && (
-              <section style={creamCardStyle}>
+              <section style={creamCardResponsive}>
                 <h2 style={sectionTitleStyle}>{t[lang].tabs.mix}</h2>
                 <p style={sectionTextStyle}>
                   {t[lang].fields.totalFlour}, {t[lang].fields.effectiveHydration} und {t[lang].fields.extraWater}
@@ -1146,7 +1164,7 @@ ${t[lang].cards.instructions}
             )}
 
             {tab === 'flour' && (
-              <section style={creamCardStyle}>
+              <section style={creamCardResponsive}>
                 <h2 style={sectionTitleStyle}>{t[lang].tabs.flour}</h2>
                 <p style={sectionTextStyle}>Für Fälle wie: „Ich habe 1 kg Mehl. Was brauche ich?“</p>
 
@@ -1173,7 +1191,7 @@ ${t[lang].cards.instructions}
             )}
 
             {tab === 'dough' && (
-              <section style={creamCardStyle}>
+              <section style={creamCardResponsive}>
                 <h2 style={sectionTitleStyle}>{t[lang].tabs.dough}</h2>
                 <p style={sectionTextStyle}>Für Fälle wie: „Ich will genau 1000 g Gesamtteig haben.“</p>
 
@@ -1205,7 +1223,7 @@ ${t[lang].cards.instructions}
             )}
 
             {tab === 'recipe' && (
-  <section style={creamCardStyle}>
+  <section style={creamCardResponsive}>
     <h2 style={sectionTitleStyle}>{t[lang].tabs.recipe}</h2>
 
     <p style={sectionTextStyle}>
@@ -1228,7 +1246,7 @@ ${t[lang].cards.instructions}
 )}
 
             {tab === 'admin' && isAdmin && (
-  <section style={creamCardStyle}>
+  <section style={creamCardResponsive}>
     <h2 style={sectionTitleStyle}>{t[lang].cards.admin}</h2>
     <p style={sectionTextStyle}>{t[lang].adminText}</p>
 
@@ -1369,7 +1387,7 @@ ${t[lang].cards.instructions}
 )}
           </div>
 
-          <aside style={rightColumnShellStyle}>
+          <aside style={rightColumnResponsive}>
             <h2 style={rightTitleStyle}>{t[lang].cards.summary}</h2>
 
             <div
@@ -1651,9 +1669,10 @@ const appPageStyle = {
   minHeight: '100vh',
   width: '100%',
   background: 'radial-gradient(circle at top, #3a2a20 0%, #1a120e 42%, #080605 100%)',
-  padding: 0,
   margin: 0,
+  padding: 0,
   fontFamily: 'Arial, sans-serif',
+  overflowX: 'hidden',
 };
 
 const heroShellStyle = {
@@ -1793,7 +1812,6 @@ const premiumSelectStyle = {
   fontSize: 15,
   outline: 'none',
 };
-
 const fieldLabelDark = {
   color: 'white',
   fontSize: 14,
@@ -1804,6 +1822,7 @@ const mainGridStyle = {
   display: 'grid',
   gridTemplateColumns: '1.15fr 0.85fr',
   gap: 24,
+  alignItems: 'start',
 };
 
 const tabsBarStyle = {
