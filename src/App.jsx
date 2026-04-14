@@ -382,7 +382,27 @@ const creamCardResponsive = {
   boxSizing: 'border-box',
   overflow: 'hidden',
 };
-  
+  const [poolishFlour, setPoolishFlour] = useState(1000);
+  const [poolishTime, setPoolishTime] = useState('10-12');
+  const yeastMap = {
+  '4-5': 0.015,
+  '7-8': 0.005,
+  '10-12': 0.003,
+  '15-18': 0.0015,
+};
+
+  const yeastPercent = yeastMap[poolishTime];
+  const poolishAmount = poolishFlour * 0.5;
+
+  const poolish = {
+  flour: poolishAmount,
+  water: poolishAmount,
+  yeast: poolishAmount * yeastPercent,
+};
+
+  const mainDough = {
+  flour: poolishFlour - poolishAmount,
+};
   const [lang, setLang] = useState('de');
   const [tab, setTab] = useState('mix');
 
@@ -519,6 +539,7 @@ const creamCardResponsive = {
         mix: 'Mehlmischung',
         flour: 'Gesamtmehl',
         dough: 'Gesamtteig',
+        poolish: 'Poolish',
         recipe: 'Rezept',
         admin: 'Admin',
       },
@@ -614,6 +635,7 @@ const creamCardResponsive = {
         mix: 'Flour Mix',
         flour: 'Total Flour',
         dough: 'Total Dough',
+        poolish: 'Poolish',
         recipe: 'Recipe',
         admin: 'Admin',
       },
@@ -709,6 +731,7 @@ const creamCardResponsive = {
         mix: 'Liszt Keverék',
         flour: 'Összlisztmennyisége',
         dough: 'Össztésztamennyisége',
+        poolish: 'Poolish',
         recipe: 'Recept',
         admin: 'Admin',
       },
@@ -817,6 +840,7 @@ const creamCardResponsive = {
     setAdminCodes(codes || []);
   }
 }
+
 
   const flourConfig = [
     { key: 'wheat', extra: 0 },
@@ -1125,7 +1149,7 @@ ${t[lang].cards.instructions}
     gap: 8,
   }}
 >
-              {['mix', 'flour', 'dough', 'recipe', ...(isAdmin ? ['admin'] : [])].map((tabKey) => (
+              {['mix', 'flour', 'dough', 'recipe', 'poolish', ...(isAdmin ? ['admin'] : [])].map((tabKey) => (
                 <button key={tabKey} onClick={() => setTab(tabKey)} style={{
   ...tabButtonStyle(tab === tabKey),
   minWidth: isMobile ? 120 : 'auto',
@@ -1235,6 +1259,7 @@ ${t[lang].cards.instructions}
     minWidth: 0,
   }}
 >
+  
                   <FieldBlockLight label={t[lang].fields.desiredDough}>
                     <input style={premiumInput} type="number" value={desiredDough} onChange={(e) => setDesiredDough(Number(e.target.value))} />
                   </FieldBlockLight>
@@ -1276,6 +1301,47 @@ ${t[lang].cards.instructions}
     >
       {t[lang].copy}
     </button>
+  </section>
+)}
+{tab === 'poolish' && (
+  <section style={creamCardResponsive}>
+    <h2 style={sectionTitleStyle}>Poolish Rechner</h2>
+
+    <div style={{
+      display: 'grid',
+      gridTemplateColumns: isMobile ? '1fr' : '1fr 1fr',
+      gap: 14
+    }}>
+      <FieldBlockLight label="Gesamtmehl">
+        <input
+          style={premiumInput}
+          type="number"
+          value={poolishFlour}
+          onChange={(e) => setPoolishFlour(Number(e.target.value))}
+        />
+      </FieldBlockLight>
+
+      <FieldBlockLight label="Fermentationszeit">
+        <select
+          style={premiumInput}
+          value={poolishTime}
+          onChange={(e) => setPoolishTime(e.target.value)}
+        >
+          <option value="4-5">4–5h</option>
+          <option value="7-8">7–8h</option>
+          <option value="10-12">10–12h</option>
+          <option value="15-18">15–18h</option>
+        </select>
+      </FieldBlockLight>
+    </div>
+
+    <div style={{ marginTop: 20 }}>
+      <ResultRowLight label="Poolish Mehl" value={`${round(poolish.flour)} g`} />
+      <ResultRowLight label="Poolish Wasser" value={`${round(poolish.water)} g`} />
+      <ResultRowLight label="Hefe" value={`${round(poolish.yeast)} g`} />
+
+      <ResultRowLight label="Restmehl Hauptteig" value={`${round(mainDough.flour)} g`} />
+    </div>
   </section>
 )}
 
