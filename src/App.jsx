@@ -527,6 +527,7 @@ const creamCardResponsive = {
 }, [tab]);
   const t = {
     de: {
+      
       brand: 'Brotformel',
       hero: 'Premium Brot-Rechner für Sauerteig, Hefe, Hydration und Mehlmischungen.',
       premium: 'Premium',
@@ -543,6 +544,22 @@ const creamCardResponsive = {
         recipe: 'Rezept',
         admin: 'Admin',
       },
+      poolish: {
+  title: 'Poolish Rechner',
+  totalFlour: 'Gesamtmehl',
+  fermentationTime: 'Fermentationszeit',
+  poolishFlour: 'Poolish Mehl',
+  poolishWater: 'Poolish Wasser',
+  poolishYeast: 'Poolish Hefe',
+  mainDoughFlour: 'Restmehl Hauptteig',
+  helper: 'Poolish besteht aus 50% des Gesamtmehls und gleich viel Wasser.',
+  times: {
+    '4-5': '4–5 Stunden',
+    '7-8': '7–8 Stunden',
+    '10-12': '10–12 Stunden',
+    '15-18': '15–18 Stunden',
+  },
+},
       helpers: {
   flourExample: 'Für Fälle wie: „Ich habe 1 kg Mehl. Was brauche ich?“',
   doughExample: 'Für Fälle wie: „Ich will genau 1000 g Gesamtteig haben.“',
@@ -639,6 +656,22 @@ const creamCardResponsive = {
         recipe: 'Recipe',
         admin: 'Admin',
       },
+      poolish: {
+  title: 'Poolish Calculator',
+  totalFlour: 'Total flour',
+  fermentationTime: 'Fermentation time',
+  poolishFlour: 'Poolish flour',
+  poolishWater: 'Poolish water',
+  poolishYeast: 'Poolish yeast',
+  mainDoughFlour: 'Remaining flour for final dough',
+  helper: 'Poolish uses 50% of the total flour and the same amount of water.',
+  times: {
+    '4-5': '4–5 hours',
+    '7-8': '7–8 hours',
+    '10-12': '10–12 hours',
+    '15-18': '15–18 hours',
+  },
+},
       helpers: {
   flourExample: 'For cases like: "I have 1 kg of flour. What do I need?"',
   doughExample: 'For cases like: "I want exactly 1000 g of total dough."',
@@ -735,6 +768,22 @@ const creamCardResponsive = {
         recipe: 'Recept',
         admin: 'Admin',
       },
+      poolish: {
+  title: 'Poolish kalkulátor',
+  totalFlour: 'Összes liszt',
+  fermentationTime: 'Fermentációs idő',
+  poolishFlour: 'Poolish liszt',
+  poolishWater: 'Poolish víz',
+  poolishYeast: 'Poolish élesztő',
+  mainDoughFlour: 'Maradék liszt a végső tésztához',
+  helper: 'A poolish az összes liszt 50%-ából és ugyanannyi vízből készül.',
+  times: {
+    '4-5': '4–5 óra',
+    '7-8': '7–8 óra',
+    '10-12': '10–12 óra',
+    '15-18': '15–18 óra',
+  },
+},
       helpers: {
   flourExample: 'Olyan esetekhez, mint: „Van 1 kg lisztem. Mire van szükségem?”',
   doughExample: 'Olyan esetekhez, mint: „Pontosan 1000 g össztésztát szeretnék.”',
@@ -1305,14 +1354,15 @@ ${t[lang].cards.instructions}
 )}
 {tab === 'poolish' && (
   <section style={creamCardResponsive}>
-    <h2 style={sectionTitleStyle}>Poolish Rechner</h2>
+    <h2 style={sectionTitleStyle}>{t[lang].poolish.title}</h2>
+    <p style={sectionTextStyle}>{t[lang].poolish.helper}</p>
 
     <div style={{
       display: 'grid',
       gridTemplateColumns: isMobile ? '1fr' : '1fr 1fr',
       gap: 14
     }}>
-      <FieldBlockLight label="Gesamtmehl">
+      <FieldBlockLight label={t[lang].poolish.totalFlour}>
         <input
           style={premiumInput}
           type="number"
@@ -1321,26 +1371,26 @@ ${t[lang].cards.instructions}
         />
       </FieldBlockLight>
 
-      <FieldBlockLight label="Fermentationszeit">
+      <FieldBlockLight label={t[lang].poolish.fermentationTime}>
         <select
           style={premiumInput}
           value={poolishTime}
           onChange={(e) => setPoolishTime(e.target.value)}
         >
-          <option value="4-5">4–5h</option>
-          <option value="7-8">7–8h</option>
-          <option value="10-12">10–12h</option>
-          <option value="15-18">15–18h</option>
+          <option value="4-5">{t[lang].poolish.times['4-5']}</option>
+          <option value="7-8">{t[lang].poolish.times['7-8']}</option>
+          <option value="10-12">{t[lang].poolish.times['10-12']}</option>
+          <option value="15-18">{t[lang].poolish.times['15-18']}</option>
         </select>
       </FieldBlockLight>
     </div>
 
     <div style={{ marginTop: 20 }}>
-      <ResultRowLight label="Poolish Mehl" value={`${round(poolish.flour)} g`} />
-      <ResultRowLight label="Poolish Wasser" value={`${round(poolish.water)} g`} />
-      <ResultRowLight label="Hefe" value={`${round(poolish.yeast)} g`} />
+      <ResultRowLight label={t[lang].poolish.poolishFlour} value={`${round(poolish.flour)} g`} />
+      <ResultRowLight label={t[lang].poolish.poolishWater} value={`${round(poolish.water)} g`} />
+      <ResultRowLight label={t[lang].poolish.poolishYeast} value={`${round(poolish.yeast)} g`} />
 
-      <ResultRowLight label="Restmehl Hauptteig" value={`${round(mainDough.flour)} g`} />
+      <ResultRowLight label={t[lang].poolish.mainDoughFlour} value={`${round(mainDough.flour)} g`} />
     </div>
   </section>
 )}
