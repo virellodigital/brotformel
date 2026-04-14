@@ -386,7 +386,7 @@ const creamCardResponsive = {
   const [lang, setLang] = useState('de');
   const [tab, setTab] = useState('mix');
 
-  const [baseWaterPct, setBaseWaterPct] = useState(80);
+  const [baseWaterPct, setBaseWaterPct] = useState(62);
   const [saltPercent, setSaltPercent] = useState(2);
   const [method, setMethod] = useState('both'); // yeast | sourdough | both
   const [time, setTime] = useState('8-12h');
@@ -413,8 +413,8 @@ const creamCardResponsive = {
 });
   const [flours, setFlours] = useState({
     wheat: 700,
-    wholegrain: 200,
-    rye: 100,
+    wholegrain: 0,
+    rye: 0,
     spelt: 0,
     oat: 0,
     durum: 0,
@@ -516,22 +516,22 @@ const creamCardResponsive = {
       logout: 'Abmelden',
       language: 'Sprache',
       tabs: {
-        mix: 'Mischung',
-        flour: 'Mehl',
-        dough: 'Teig',
+        mix: 'Mehlmischung',
+        flour: 'Gesamtmehl',
+        dough: 'Gesamtteig',
         recipe: 'Rezept',
         admin: 'Admin',
       },
       fields: {
-        baseWater: 'Basis-Wasser',
-        salt: 'Salz',
+        baseWater: 'Basis-Wasser %',
+        salt: 'Salz %',
         method: 'Methode',
         time: 'Zeit',
         logic: 'Sauerteig / Hefe Logik',
         auto: 'Automatisch',
         manual: 'Manuell',
-        manualYeast: 'Hefe manuell',
-        manualSourdough: 'Sauerteig manuell',
+        manualYeast: 'Hefe manuell %',
+        manualSourdough: 'Sauerteig manuell %',
         totalFlour: 'Gesamtmehl',
         hydration: 'Hydration %',
         saltPercent: 'Salz %',
@@ -607,22 +607,22 @@ const creamCardResponsive = {
       logout: 'Logout',
       language: 'Language',
       tabs: {
-        mix: 'Mix',
-        flour: 'Flour',
-        dough: 'Dough',
+        mix: 'Flour Mix',
+        flour: 'Total Flour',
+        dough: 'Total Dough',
         recipe: 'Recipe',
         admin: 'Admin',
       },
       fields: {
-        baseWater: 'Base water',
-        salt: 'Salt',
+        baseWater: 'Base water %',
+        salt: 'Salt %',
         method: 'Method',
         time: 'Time',
         logic: 'Sourdough / yeast logic',
         auto: 'Automatic',
         manual: 'Manual',
-        manualYeast: 'Manual yeast',
-        manualSourdough: 'Manual sourdough',
+        manualYeast: 'Manual yeast %',
+        manualSourdough: 'Manual sourdough %',
         totalFlour: 'Total flour',
         hydration: 'Hydration %',
         saltPercent: 'Salt %',
@@ -698,22 +698,22 @@ const creamCardResponsive = {
       logout: 'Kilépés',
       language: 'Nyelv',
       tabs: {
-        mix: 'Keverék',
-        flour: 'Liszt',
-        dough: 'Tészta',
+        mix: 'Liszt Keverék',
+        flour: 'Összlisztmennyisége',
+        dough: 'Össztésztamennyisége',
         recipe: 'Recept',
         admin: 'Admin',
       },
       fields: {
-        baseWater: 'Alap víz',
-        salt: 'Só',
+        baseWater: 'Alap víz %',
+        salt: 'Só %',
         method: 'Módszer',
         time: 'Idő',
         logic: 'Kovász / élesztő logika',
         auto: 'Automatikus',
         manual: 'Kézi',
-        manualYeast: 'Kézi élesztő',
-        manualSourdough: 'Kézi kovász',
+        manualYeast: 'Kézi élesztő %',
+        manualSourdough: 'Kézi kovász %',
         totalFlour: 'Összes liszt',
         hydration: 'Hidratáció %',
         saltPercent: 'Só %',
@@ -1000,7 +1000,9 @@ ${t[lang].cards.instructions}
     maxWidth: '100%',
     width: 'auto',
     objectFit: 'contain',
-    filter: 'drop-shadow(0 0 12px rgba(231,194,122,0.6))',
+    filter: 'drop-shadow(0 0 12px rgba(245, 214, 131, 0.95))',
+    boxShadow: '0 0 12px rgba(255, 255, 255, 0)',
+    borderRadius: 16,
     transition: '0.3s',
   }}
   onMouseEnter={(e) => (e.target.style.transform = 'scale(1.05)')}
@@ -1615,7 +1617,7 @@ const styles = {
 
 const authPageStyle = {
   minHeight: '100vh',
-  background: 'radial-gradient(circle at top, #f30c0c 0%, #1e1715 38%, #0f0a09 100%)',
+  background: 'radial-gradient(circle at top, #3b2f2f 0%, #1e1715 38%, #0f0a09 100%)',
   padding: 24,
   display: 'flex',
   alignItems: 'center',
