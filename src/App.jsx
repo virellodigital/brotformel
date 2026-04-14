@@ -1198,7 +1198,7 @@ ${t[lang].cards.instructions}
     gap: 8,
   }}
 >
-              {['mix', 'flour', 'dough', 'recipe', 'poolish', ...(isAdmin ? ['admin'] : [])].map((tabKey) => (
+              {['mix', 'flour', 'dough', 'poolish', 'recipe',  ...(isAdmin ? ['admin'] : [])].map((tabKey) => (
                 <button key={tabKey} onClick={() => setTab(tabKey)} style={{
   ...tabButtonStyle(tab === tabKey),
   minWidth: isMobile ? 120 : 'auto',
