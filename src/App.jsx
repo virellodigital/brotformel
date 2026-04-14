@@ -522,6 +522,10 @@ const creamCardResponsive = {
         recipe: 'Rezept',
         admin: 'Admin',
       },
+      helpers: {
+  flourExample: 'Für Fälle wie: „Ich habe 1 kg Mehl. Was brauche ich?“',
+  doughExample: 'Für Fälle wie: „Ich will genau 1000 g Gesamtteig haben.“',
+},
       fields: {
         baseWater: 'Basis-Wasser %',
         salt: 'Salz %',
@@ -613,6 +617,10 @@ const creamCardResponsive = {
         recipe: 'Recipe',
         admin: 'Admin',
       },
+      helpers: {
+  flourExample: 'For cases like: "I have 1 kg of flour. What do I need?"',
+  doughExample: 'For cases like: "I want exactly 1000 g of total dough."',
+},
       fields: {
         baseWater: 'Base water %',
         salt: 'Salt %',
@@ -704,6 +712,10 @@ const creamCardResponsive = {
         recipe: 'Recept',
         admin: 'Admin',
       },
+      helpers: {
+  flourExample: 'Olyan esetekhez, mint: „Van 1 kg lisztem. Mire van szükségem?”',
+  doughExample: 'Olyan esetekhez, mint: „Pontosan 1000 g össztésztát szeretnék.”',
+},
       fields: {
         baseWater: 'Alap víz %',
         salt: 'Só %',
@@ -1180,7 +1192,7 @@ ${t[lang].cards.instructions}
             {tab === 'flour' && (
               <section style={creamCardResponsive}>
                 <h2 style={sectionTitleStyle}>{t[lang].tabs.flour}</h2>
-                <p style={sectionTextStyle}>Für Fälle wie: „Ich habe 1 kg Mehl. Was brauche ich?“</p>
+                <p style={sectionTextStyle}>{t[lang].helpers.flourExample}</p>
 
                 <div
   style={{
@@ -1212,7 +1224,7 @@ ${t[lang].cards.instructions}
             {tab === 'dough' && (
               <section style={creamCardResponsive}>
                 <h2 style={sectionTitleStyle}>{t[lang].tabs.dough}</h2>
-                <p style={sectionTextStyle}>Für Fälle wie: „Ich will genau 1000 g Gesamtteig haben.“</p>
+                <p style={sectionTextStyle}>{t[lang].helpers.doughExample}</p>
 
                 <div
   style={{
