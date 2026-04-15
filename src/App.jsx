@@ -23,6 +23,7 @@ function AuthScreen() {
   const [purchaseCode, setPurchaseCode] = useState('');
   const [message, setMessage] = useState('');
   const [loading, setLoading] = useState(false);
+  
 
   const t = {
     de: {
@@ -382,34 +383,19 @@ const creamCardResponsive = {
   boxSizing: 'border-box',
   overflow: 'hidden',
 };
-  const [poolishFlour, setPoolishFlour] = useState(1000);
-  const [poolishTime, setPoolishTime] = useState('10-12');
-  const yeastMap = {
-  '4-5': 0.015,
-  '7-8': 0.005,
-  '10-12': 0.003,
-  '15-18': 0.0015,
-};
-
-  const yeastPercent = yeastMap[poolishTime];
-  const poolishAmount = poolishFlour * 0.5;
-
-  const poolish = {
-  flour: poolishAmount,
-  water: poolishAmount,
-  yeast: poolishAmount * yeastPercent,
-};
-
-  const mainDough = {
-  flour: poolishFlour - poolishAmount,
-};
+  
   const [lang, setLang] = useState('de');
   const [tab, setTab] = useState('mix');
+  
 
   const [baseWaterPct, setBaseWaterPct] = useState(62);
   const [saltPercent, setSaltPercent] = useState(2);
-  const [method, setMethod] = useState('both'); // yeast | sourdough | both
+  const [method, setMethod] = useState('both'); // yeast | sourdough | both | poolish
   const [time, setTime] = useState('8-12h');
+  const [poolishPercent, setPoolishPercent] = useState(50);
+  const [poolishHydration, setPoolishHydration] = useState(100);
+  const [poolishTime, setPoolishTime] = useState('10-12');
+  
   const [autoMode, setAutoMode] = useState(true);
   const [manualYeastPercent, setManualYeastPercent] = useState(0.3);
   const [manualSourdoughPercent, setManualSourdoughPercent] = useState(20);
@@ -544,6 +530,8 @@ const creamCardResponsive = {
         recipe: 'Rezept',
         admin: 'Admin',
       },
+      
+      
       poolish: {
   title: 'Poolish Rechner',
   totalFlour: 'Gesamtmehl',
@@ -560,6 +548,25 @@ const creamCardResponsive = {
     '15-18': '15–18 Stunden',
   },
 },
+poolishHints: {
+  time: {
+    '4-5': 'Kurze Poolish-Fermentation: eher warm führen, ca. 24–26°C.',
+    '7-8': 'Mittlere Poolish-Fermentation: ideal bei ca. 22–24°C.',
+    '10-12': 'Klassische Poolish-Fermentation: ideal bei Raumtemperatur, ca. 20–22°C.',
+    '15-18': 'Lange Poolish-Fermentation: eher kühl führen, ca. 18–20°C.',
+  },
+  fold: {
+    high: 'Bei hoher Hydration: 3–4x dehnen und falten alle 30 Minuten.',
+    mid: 'Bei mittlerer Hydration: 2–3x dehnen und falten alle 30 Minuten.',
+    low: 'Bei niedriger Hydration: 1–2x dehnen und falten reicht.',
+  },
+  bake: {
+    small: 'Kleine Brote: 250°C anbacken, dann 220°C. 22–30 Minuten.',
+    medium: 'Mittlere Brote: 250°C anbacken, dann 220°C. 28–35 Minuten.',
+    large: 'Großes Brot: 250°C anbacken, dann 220°C. 35–45 Minuten.',
+  }
+},
+
       helpers: {
   flourExample: 'Für Fälle wie: „Ich habe 1 kg Mehl. Was brauche ich?“',
   doughExample: 'Für Fälle wie: „Ich will genau 1000 g Gesamtteig haben.“',
@@ -589,6 +596,7 @@ const creamCardResponsive = {
         yeast: 'Hefe',
         sourdough: 'Sauerteig',
         both: 'Kombi',
+        poolish: 'Poolish',
       },
       times: {
         '2-4h': '2–4h',
@@ -672,6 +680,24 @@ const creamCardResponsive = {
     '15-18': '15–18 hours',
   },
 },
+poolishHints: {
+  time: {
+    '4-5': 'Short poolish fermentation: keep warm, around 24–26°C.',
+    '7-8': 'Medium poolish fermentation: ideal at 22–24°C.',
+    '10-12': 'Classic poolish fermentation: room temp 20–22°C.',
+    '15-18': 'Long fermentation: keep cooler, around 18–20°C.',
+  },
+  fold: {
+    high: 'High hydration: stretch & fold 3–4 times every 30 minutes.',
+    mid: 'Medium hydration: stretch & fold 2–3 times.',
+    low: 'Low hydration: 1–2 folds are enough.',
+  },
+  bake: {
+    small: 'Small breads: 250°C start, then 220°C. 22–30 min.',
+    medium: 'Medium breads: 250°C start, then 220°C. 28–35 min.',
+    large: 'Large bread: 250°C start, then 220°C. 35–45 min.',
+  }
+},
       helpers: {
   flourExample: 'For cases like: "I have 1 kg of flour. What do I need?"',
   doughExample: 'For cases like: "I want exactly 1000 g of total dough."',
@@ -701,6 +727,7 @@ const creamCardResponsive = {
         yeast: 'Yeast',
         sourdough: 'Sourdough',
         both: 'Combo',
+        poolish: 'Poolish',
       },
       times: {
         '2-4h': '2–4h',
@@ -784,6 +811,24 @@ const creamCardResponsive = {
     '15-18': '15–18 óra',
   },
 },
+poolishHints: {
+  time: {
+    '4-5': 'Rövid poolish erjesztés: melegen, kb. 24–26°C.',
+    '7-8': 'Közepes erjesztés: ideális 22–24°C-on.',
+    '10-12': 'Klasszikus poolish: szobahőmérsékleten 20–22°C.',
+    '15-18': 'Hosszú erjesztés: hűvösebben, 18–20°C.',
+  },
+  fold: {
+    high: 'Magas hidratáció: 3–4 hajtás 30 percenként.',
+    mid: 'Közepes hidratáció: 2–3 hajtás.',
+    low: 'Alacsony hidratáció: 1–2 hajtás elegendő.',
+  },
+  bake: {
+    small: 'Kis kenyerek: 250°C majd 220°C. 22–30 perc.',
+    medium: 'Közepes kenyerek: 250°C majd 220°C. 28–35 perc.',
+    large: 'Nagy kenyér: 250°C majd 220°C. 35–45 perc.',
+  }
+},
       helpers: {
   flourExample: 'Olyan esetekhez, mint: „Van 1 kg lisztem. Mire van szükségem?”',
   doughExample: 'Olyan esetekhez, mint: „Pontosan 1000 g össztésztát szeretnék.”',
@@ -813,6 +858,7 @@ const creamCardResponsive = {
         yeast: 'Élesztő',
         sourdough: 'Kovász',
         both: 'Kombó',
+        poolish: 'Poolish',
       },
       times: {
         '2-4h': '2–4h',
@@ -960,25 +1006,57 @@ const creamCardResponsive = {
 
   const sourdoughPct = getSourdoughPct();
   const yeastPct = getYeastPct();
+  const poolishYeastMap = {
+  '4-5': 0.015,
+  '7-8': 0.005,
+  '10-12': 0.003,
+  '15-18': 0.0015,
+};
+
+  const poolishYeastPercent = poolishYeastMap[poolishTime];
+  const poolishFlourAmount = flourAmount * (poolishPercent / 100);
+  const poolishWaterAmount = poolishFlourAmount * (poolishHydration / 100);
+  const poolishYeastAmount = poolishFlourAmount * poolishYeastPercent;
 
   function calculateRecipe(totalFlourInput) {
     const flourTotal = Number(totalFlourInput) || 0;
     const hydrationPct = flourMix.hydrationPct / 100;
     const saltPct = Number(saltPercent) / 100;
 
-    const sourdough = flourTotal * sourdoughPct;
-    const sourdoughFlour = sourdough / 2;
-    const sourdoughWater = sourdough / 2;
+    let sourdough = 0;
+let sourdoughFlour = 0;
+let sourdoughWater = 0;
+
+if (method === 'sourdough' || method === 'both') {
+  sourdough = flourTotal * sourdoughPct;
+  sourdoughFlour = sourdough / 2;
+  sourdoughWater = sourdough / 2;
+}
 
     const totalWater = flourTotal * hydrationPct;
-    const directWater = totalWater - sourdoughWater;
-    const directFlour = flourTotal - sourdoughFlour;
+
+let directWater = totalWater - sourdoughWater;
+let directFlour = flourTotal - sourdoughFlour;
+
+if (method === 'poolish') {
+  const currentPoolishFlour = flourTotal * (poolishPercent / 100);
+  const currentPoolishWater = currentPoolishFlour * (poolishHydration / 100);
+
+  directFlour = flourTotal - currentPoolishFlour;
+  directWater = totalWater - currentPoolishWater;
+}
+    
 
     const salt = flourTotal * saltPct;
-    const yeast = flourTotal * yeastPct;
-    const dryYeast = yeast / 3;
 
-    const totalDough = directFlour + directWater + salt + sourdough + yeast;
+let yeast = 0;
+if (method === 'yeast' || method === 'both') {
+  yeast = flourTotal * yeastPct;
+}
+
+const dryYeast = yeast / 3;
+
+const totalDough = directFlour + directWater + salt + sourdough + yeast;
 
     return {
       flourTotal,
@@ -1031,13 +1109,53 @@ const creamCardResponsive = {
       ? doughRecipe
       : mixRecipe;
 
-const recipeText = `
+  const poolishTimeHint = t[lang].poolishHints.time[poolishTime];
+       
+        const foldHint =
+  flourMix.hydrationPct > 75
+    ? t[lang].poolishHints.fold.high
+    : flourMix.hydrationPct >= 68
+      ? t[lang].poolishHints.fold.mid
+      : t[lang].poolishHints.fold.low;
+
+     
+      const bakeHint =
+  pieces >= 3
+    ? t[lang].poolishHints.bake.small
+    : pieces === 2
+      ? t[lang].poolishHints.bake.medium
+      : t[lang].poolishHints.bake.large;
+      
+      const recipeText =
+  method === 'poolish'
+    ? `
+${t[lang].cards.ingredients}
+
+- Poolish Mehl: ${round(poolishFlourAmount)} g
+- Poolish Wasser: ${round(poolishWaterAmount)} g
+- Poolish Hefe: ${round(poolishYeastAmount)} g
+
+- Restmehl: ${round(activeRecipe.directFlour)} g
+- Restwasser: ${round(activeRecipe.directWater)} g
+- ${t[lang].labels.salt}: ${activeRecipe.salt.toFixed(1)} g
+
+${t[lang].cards.instructions}
+
+1. Poolish anrühren (Mehl + Wasser + Hefe gut mischen).
+2. ${poolishTime} Stunden bei Raumtemperatur stehen lassen.
+3. Hinweis zur Fermentation: ${poolishTimeHint}
+4. Poolish mit Restmehl, Restwasser und Salz mischen.
+5. ${foldHint}
+6. Teig ruhen lassen, formen und in den Gärkorb / auf Spannung bringen.
+7. ${bakeHint}
+`.trim()
+    : `
 ${t[lang].cards.ingredients}
 - ${t[lang].labels.flour}: ${activeRecipe.directFlour.toFixed(0)} g
 - ${t[lang].labels.water}: ${activeRecipe.directWater.toFixed(0)} g
 - ${t[lang].labels.salt}: ${activeRecipe.salt.toFixed(1)} g
-${method !== 'yeast' ? `- ${t[lang].labels.sourdough}: ${activeRecipe.sourdough.toFixed(1)} g` : ''}
-${method !== 'sourdough' ? `- ${t[lang].labels.yeast}: ${activeRecipe.yeast.toFixed(1)} g` : ''}
+${method === 'sourdough' || method === 'both' ? `- ${t[lang].labels.sourdough}: ${activeRecipe.sourdough.toFixed(1)} g` : ''}
+${method === 'yeast' || method === 'both' ? `- ${t[lang].labels.yeast}: ${activeRecipe.yeast.toFixed(1)} g` : ''}
 
 ${t[lang].cards.instructions}
 1. ${recipeSteps[0]}
@@ -1128,7 +1246,7 @@ ${t[lang].cards.instructions}
           <div
   style={{
     ...topSettingsShell,
-    gridTemplateColumns: isMobile ? '1fr' : 'repeat(5, 1fr)',
+    gridTemplateColumns: isMobile ? '1fr' : 'repeat(4, 1fr)',
   }}
 >
             <FieldBlock label={t[lang].fields.baseWater}>
@@ -1144,8 +1262,43 @@ ${t[lang].cards.instructions}
                 <option value="yeast">{t[lang].methods.yeast}</option>
                 <option value="sourdough">{t[lang].methods.sourdough}</option>
                 <option value="both">{t[lang].methods.both}</option>
+                <option value="poolish">{t[lang].methods.poolish}</option>
               </select>
             </FieldBlock>
+            {method === 'poolish' && (
+  <>
+    <FieldBlock label="Poolish %">
+      <input
+        style={premiumInputDark}
+        type="number"
+        value={poolishPercent}
+        onChange={(e) => setPoolishPercent(Number(e.target.value))}
+      />
+    </FieldBlock>
+
+    <FieldBlock label="Poolish Hydration %">
+      <input
+        style={premiumInputDark}
+        type="number"
+        value={poolishHydration}
+        onChange={(e) => setPoolishHydration(Number(e.target.value))}
+      />
+    </FieldBlock>
+
+    <FieldBlock label="Poolish Zeit">
+      <select
+        style={premiumSelectStyle}
+        value={poolishTime}
+        onChange={(e) => setPoolishTime(e.target.value)}
+      >
+        <option value="4-5">4–5h</option>
+        <option value="7-8">7–8h</option>
+        <option value="10-12">10–12h</option>
+        <option value="15-18">15–18h</option>
+      </select>
+    </FieldBlock>
+  </>
+)}
 
             <FieldBlock label={t[lang].fields.time}>
               <select style={premiumSelectStyle} value={time} onChange={(e) => setTime(e.target.value)}>
@@ -1285,9 +1438,21 @@ ${t[lang].cards.instructions}
                 <div style={{ display: 'grid', gap: 12, marginTop: 18 }}>
                   <ResultRowLight label={t[lang].labels.directFlour} value={`${round(flourRecipe.directFlour)} g`} />
                   <ResultRowLight label={t[lang].labels.directWater} value={`${round(flourRecipe.directWater)} g`} />
+                  {method === 'poolish' && (
+  <>
+    <ResultRowLight label="Poolish Mehl" value={`${round(poolishFlourAmount)} g`} />
+    <ResultRowLight label="Poolish Wasser" value={`${round(poolishWaterAmount)} g`} />
+    <ResultRowLight label="Poolish Hefe" value={`${round(poolishYeastAmount)} g`} />
+  </>
+)}
                   <ResultRowLight label={t[lang].labels.salt} value={`${round(flourRecipe.salt)} g`} />
-                  {method !== 'yeast' && <ResultRowLight label={t[lang].labels.sourdough} value={`${round(flourRecipe.sourdough)} g`} />}
-                  {method !== 'sourdough' && <ResultRowLight label={t[lang].labels.yeast} value={`${round(flourRecipe.yeast)} g`} />}
+                  {(method === 'sourdough' || method === 'both') && (
+  <ResultRowLight label={t[lang].labels.sourdough} value={`${round(flourRecipe.sourdough)} g`} />
+)}
+
+{(method === 'yeast' || method === 'both') && (
+  <ResultRowLight label={t[lang].labels.yeast} value={`${round(flourRecipe.yeast)} g`} />
+)}
                   <ResultRowLight label={t[lang].fields.totalDough} value={`${round(flourRecipe.totalDough)} g`} strong />
                   <ResultRowLight label={t[lang].labels.perBread} value={`${round(flourRecipe.totalDough / Math.max(1, pieces))} g`} />
                 </div>
@@ -1322,8 +1487,13 @@ ${t[lang].cards.instructions}
                   <ResultRowLight label={t[lang].labels.flour} value={`${round(doughRecipe.flourTotal)} g`} strong />
                   <ResultRowLight label={t[lang].labels.directWater} value={`${round(doughRecipe.directWater)} g`} />
                   <ResultRowLight label={t[lang].labels.salt} value={`${round(doughRecipe.salt)} g`} />
-                  {method !== 'yeast' && <ResultRowLight label={t[lang].labels.sourdough} value={`${round(doughRecipe.sourdough)} g`} />}
-                  {method !== 'sourdough' && <ResultRowLight label={t[lang].labels.yeast} value={`${round(doughRecipe.yeast)} g`} />}
+                  {(method === 'sourdough' || method === 'both') && (
+  <ResultRowLight label={t[lang].labels.sourdough} value={`${round(doughRecipe.sourdough)} g`} />
+)}
+
+{(method === 'yeast' || method === 'both') && (
+  <ResultRowLight label={t[lang].labels.yeast} value={`${round(doughRecipe.yeast)} g`} />
+)}
                   <ResultRowLight label={t[lang].fields.totalDough} value={`${round(desiredDough)} g`} strong />
                   <ResultRowLight label={t[lang].labels.perBread} value={`${round(desiredDough / Math.max(1, pieces))} g`} />
                 </div>
@@ -1366,8 +1536,8 @@ ${t[lang].cards.instructions}
         <input
           style={premiumInput}
           type="number"
-          value={poolishFlour}
-          onChange={(e) => setPoolishFlour(Number(e.target.value))}
+          value={flourAmount}
+onChange={(e) => setFlourAmount(Number(e.target.value))}
         />
       </FieldBlockLight>
 
@@ -1386,11 +1556,11 @@ ${t[lang].cards.instructions}
     </div>
 
     <div style={{ marginTop: 20 }}>
-      <ResultRowLight label={t[lang].poolish.poolishFlour} value={`${round(poolish.flour)} g`} />
-      <ResultRowLight label={t[lang].poolish.poolishWater} value={`${round(poolish.water)} g`} />
-      <ResultRowLight label={t[lang].poolish.poolishYeast} value={`${round(poolish.yeast)} g`} />
+      <ResultRowLight label={t[lang].poolish.poolishFlour} value={`${round(poolishFlourAmount)} g`} />
+<ResultRowLight label={t[lang].poolish.poolishWater} value={`${round(poolishWaterAmount)} g`} />
+<ResultRowLight label={t[lang].poolish.poolishYeast} value={`${round(poolishYeastAmount)} g`} />
 
-      <ResultRowLight label={t[lang].poolish.mainDoughFlour} value={`${round(mainDough.flour)} g`} />
+<ResultRowLight label={t[lang].poolish.mainDoughFlour} value={`${round(flourAmount - poolishFlourAmount)} g`} />
     </div>
   </section>
 )}
@@ -1548,8 +1718,22 @@ ${t[lang].cards.instructions}
 >
               <SummaryTile label={t[lang].fields.baseWater} value={`${round(baseWaterPct)}%`} />
               <SummaryTile label={t[lang].fields.effectiveHydration} value={`${round(flourMix.hydrationPct)}%`} />
-              <SummaryTile label={t[lang].labels.yeast} value={`${round(yeastPct * 100, 2)}%`} />
-              <SummaryTile label={t[lang].labels.sourdough} value={`${round(sourdoughPct * 100, 2)}%`} />
+              <SummaryTile
+  label={t[lang].labels.yeast}
+  value={`${round((method === 'yeast' || method === 'both' ? yeastPct : 0) * 100, 2)}%`}
+/>
+
+<SummaryTile
+  label={method === 'poolish' ? 'Poolish Hefe' : t[lang].labels.sourdough}
+  value={`${round(
+    (method === 'sourdough' || method === 'both'
+      ? sourdoughPct
+      : method === 'poolish'
+        ? poolishYeastPercent
+        : 0) * 100,
+    2
+  )}%`}
+/>
             </div>
 
             <div style={darkInfoBoxStyle}>
